@@ -1,115 +1,243 @@
+import Image from "next/image";
+
+import {
+  FaBriefcase,
+  FaGraduationCap,
+  FaSeedling,
+  FaBrain,
+  FaRocket,
+  FaBullseye,
+  FaPuzzlePiece,
+} from "react-icons/fa";
+
 export default function About() {
   return (
-    <section className="mx-auto w-full max-w-md px-6 py-12">
-      <div className="mb-12">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-400">
-          About
-        </p>
-
-        <h1 className="mt-2 text-4xl font-bold tracking-tight">
-          A little more about me.
+    <section
+      id="top"
+      className="mx-auto w-full max-w-md px-6 py-12"
+    >
+      {/* INTRO */}
+      <div className="mb-14">
+        <h1 className="text-4xl font-bold tracking-tight">
+          About Me
         </h1>
 
+        <div className="relative mx-auto mt-6 h-56 w-full max-w-xs">
+          <div className="absolute inset-8 rounded-full bg-purple-600/20 blur-3xl" />
+
+          <Image
+            src="/images/about-cat.png"
+            alt="Neon cat waving with a heart speech bubble"
+            fill
+            sizes="(max-width: 768px) 100vw, 320px"
+            className="
+              object-contain
+              drop-shadow-[0_0_20px_rgba(139,92,246,0.35)]
+            "
+            priority
+          />
+        </div>
+
         <p className="mt-6 leading-7 text-slate-300">
-          I&apos;m a Computer Science student and aspiring software developer
-          with a background in administrative work and backend development.
-          I like building practical things, figuring out how systems work, and
-          learning by turning ideas into real projects.
+          I&apos;m a Computer Science student who loves turning ideas into real
+          things. I enjoy building clean, useful, and sometimes playful software
+          that solves problems people actually have.
         </p>
 
-        <p className="mt-4 leading-7 text-slate-400">
-          Outside of code, I organize community gardening projects, volunteer
-          with horticulture education, and somehow manage to involve cats in
-          an unreasonable number of my software projects.
+        <p className="mt-5 leading-7 text-slate-400">
+          Outside of code, I&apos;m probably in my garden, planning my next
+          project, or learning something new that I definitely don&apos;t need...
+          yet. 🌱
         </p>
       </div>
 
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold">Experience</h2>
-
-        <div className="mt-6 border-l border-slate-700 pl-5">
-          <p className="text-sm text-blue-400">2023 - Present</p>
-
-          <h3 className="mt-1 text-lg font-semibold">
-            Administrative Assistant
-          </h3>
-
-          <p className="text-slate-400">
-            SUNY Oswego - Triandiflou Institute
-          </p>
-
-          <p className="mt-3 leading-7 text-slate-300">
-            Support day-to-day operations, coordinate events and communication,
-            manage administrative workflows, and help keep a very busy office
-            organized.
-          </p>
-        </div>
-
-        <div className="mt-8 border-l border-slate-700 pl-5">
-          <p className="text-sm text-blue-400">2021 - 2022</p>
-
-          <h3 className="mt-1 text-lg font-semibold">
-            Backend Developer
-          </h3>
-
-          <p className="text-slate-400">
-            Taptima
-          </p>
-
-          <p className="mt-3 leading-7 text-slate-300">
-            Worked with PHP, Symfony, JavaScript, Git, Docker, and MySQL while
-            contributing to backend application development.
-          </p>
-        </div>
-      </div>
-
-      <div className="mb-12">
-        <h2 className="text-2xl font-bold">Education</h2>
-
-        <div className="mt-6 border-l border-slate-700 pl-5">
-          <p className="text-sm text-blue-400">2026 - 2027</p>
-
-          <h3 className="mt-1 text-lg font-semibold">
-            A.S. Computer Science
-          </h3>
-
-          <p className="text-slate-400">
-            Finger Lakes Community College
-          </p>
-
-          <p className="mt-3 leading-7 text-slate-300">
-            Coursework includes Java, C#, web development, data structures,
-            calculus, and software development projects.
-          </p>
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-bold">
-          Community & Volunteering
+      {/* MINDSET */}
+      <div className="mb-16">
+        <h2 className="text-center text-2xl font-bold">
+          Achievements /
+          <br />
+          Learning Mindset
         </h2>
 
-        <div className="mt-6 border-l border-slate-700 pl-5">
-          <h3 className="text-lg font-semibold">
-            Gardening Club Organizer
-          </h3>
+        <div className="mt-7 space-y-3">
+          <div className="flex gap-4 rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <FaBrain className="mt-1 shrink-0 text-2xl text-pink-400" />
+            <div>
+              <h3 className="font-semibold text-slate-100">
+                Curious by nature
+              </h3>
+              <p className="mt-1 text-sm leading-6 text-slate-400">
+                I love diving deep, asking questions, and understanding how
+                things really work.
+              </p>
+            </div>
+          </div>
 
-          <p className="mt-3 leading-7 text-slate-300">
-            Organize gardening activities and educational opportunities for the
-            SUNY Oswego community.
-          </p>
+          <div className="flex gap-4 rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <FaRocket className="mt-1 shrink-0 text-2xl text-blue-400" />
+            <div>
+              <h3 className="font-semibold text-slate-100">
+                Always learning
+              </h3>
+              <p className="mt-1 text-sm leading-6 text-slate-400">
+                New tech, new concepts, new challenges - I get excited about
+                them all.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-4 rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <FaBullseye className="mt-1 shrink-0 text-2xl text-red-400" />
+            <div>
+              <h3 className="font-semibold text-slate-100">
+                Goal-oriented
+              </h3>
+              <p className="mt-1 text-sm leading-6 text-slate-400">
+                I set high standards for myself and enjoy turning big goals into
+                small daily wins.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-4 rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <FaPuzzlePiece className="mt-1 shrink-0 text-2xl text-cyan-400" />
+            <div>
+              <h3 className="font-semibold text-slate-100">
+                Problem solver
+              </h3>
+              <p className="mt-1 text-sm leading-6 text-slate-400">
+                I see problems as puzzles. The fun is finding the right approach
+                and making it work.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* EXPERIENCE */}
+      <div className="mb-14">
+        <div className="flex items-center gap-3">
+          <FaBriefcase className="text-xl text-slate-300" />
+          <h2 className="text-2xl font-bold">
+            Experience
+          </h2>
         </div>
 
-        <div className="mt-8 border-l border-slate-700 pl-5">
-          <h3 className="text-lg font-semibold">
-            Master Gardener Volunteer
+        <div className="mt-6 space-y-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <h3 className="font-semibold text-slate-100">
+              Administrative Assistant
+            </h3>
+
+            <p className="mt-1 text-sm text-blue-400">
+              SUNY Oswego
+            </p>
+
+            <p className="mt-1 text-sm text-slate-500">
+              2023 - Present
+            </p>
+
+            <p className="mt-4 leading-7 text-slate-300">
+              Event coordination, communication, administrative systems, and
+              supporting cross-team operations.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <h3 className="font-semibold text-slate-100">
+              Backend Developer
+            </h3>
+
+            <p className="mt-1 text-sm text-blue-400">
+              Taptima
+            </p>
+
+            <p className="mt-1 text-sm text-slate-500">
+              2021 - 2022
+            </p>
+
+            <p className="mt-4 leading-7 text-slate-300">
+              Developed and maintained web applications using PHP (Symfony),
+              MySQL, Docker, Git, and JavaScript.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* EDUCATION */}
+      <div className="mb-14">
+        <div className="flex items-center gap-3">
+          <FaGraduationCap className="text-xl text-slate-300" />
+          <h2 className="text-2xl font-bold">
+            Education
+          </h2>
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+          <h3 className="font-semibold text-slate-100">
+            Finger Lakes Community College
           </h3>
 
-          <p className="mt-3 leading-7 text-slate-300">
-            Participate in horticulture education and community gardening work
-            through Cornell Cooperative Extension.
+          <p className="mt-2 text-blue-400">
+            A.S. in Computer Science
+          </p>
+
+          <p className="mt-1 text-sm text-slate-500">
+            Expected 2027
+          </p>
+
+          <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-300">
+            <li>• Relevant coursework in software development</li>
+            <li>• Honors student</li>
+            <li>• Phi Theta Kappa</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* VOLUNTEERING */}
+      <div className="mb-12">
+        <div className="flex items-center gap-3">
+          <FaSeedling className="text-xl text-purple-300" />
+          <h2 className="text-2xl font-bold">
+            Volunteering
+          </h2>
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+          <h3 className="font-semibold text-slate-100">
+            Community Involvement
+          </h3>
+
+          <p className="mt-4 leading-7 text-slate-300">
+            I enjoy giving back, helping with events, and being part of
+            initiatives that make a positive impact.
+          </p>
+
+          <p className="mt-4 text-sm leading-6 text-slate-400">
+            Gardening Club Organizer · Master Gardener Volunteer
           </p>
         </div>
+      </div>
+
+      {/* BACK TO TOP */}
+      <div className="text-center">
+        <a
+          href="#top"
+          className="
+            inline-flex items-center gap-2
+            rounded-full
+            border border-purple-500/50
+            px-5 py-2.5
+            text-sm font-medium
+            text-purple-300
+            transition
+            hover:border-purple-400
+            hover:bg-purple-950/40
+            hover:text-purple-200
+          "
+        >
+          Back to Top ↑
+        </a>
       </div>
     </section>
   );

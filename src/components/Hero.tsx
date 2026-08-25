@@ -17,7 +17,7 @@ export default function Hero() {
     let touchStartY = 0;
     let extraScroll = 0;
 
-    const SCROLL_THRESHOLD = 180;
+    const SCROLL_THRESHOLD = 300;
     const SWIPE_THRESHOLD = 120;
 
     const atBottom = () => {
@@ -160,6 +160,7 @@ export default function Hero() {
                 border border-slate-700
                 px-4 py-3
                 text-slate-200
+                font-semibold
                 transition
                 hover:border-blue-500
                 hover:bg-slate-900
@@ -180,6 +181,7 @@ export default function Hero() {
                 border border-slate-700
                 px-4 py-3
                 text-slate-200
+                font-semibold
                 transition
                 hover:border-blue-500
                 hover:bg-slate-900
