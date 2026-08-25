@@ -229,10 +229,19 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="pb-4 text-center">
-          <p className="text-sm text-slate-400">
-            {isTouchDevice ? "Swipe to explore" : "Scroll to explore"}
-          </p>
+        <div className="pb-6 text-center">
+          <div className="flex flex-col items-center gap-2 text-slate-400">
+            <p className="text-base font-medium uppercase tracking-[0.22em]">
+              {isTouchDevice ? "Swipe to explore" : "Scroll to explore"}
+            </p>
+
+            <span
+              aria-hidden="true"
+              className="animate-bounce text-2xl text-blue-400"
+            >
+              ↓
+            </span>
+          </div>
         </div>
       </section>
   )
