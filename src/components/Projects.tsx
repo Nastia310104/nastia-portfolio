@@ -1,44 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import PageSection from "@/components/PageSection";
 import { useExploreNextPage } from "@/hooks/useExploreNextPage";
-
-type Project = {
-  title: string;
-  type: string;
-  image?: string;
-  alt?: string;
-  description: string;
-  technologies: string[];
-};
-
-const projects: Project[] = [
-  {
-    title: "Catnect Four",
-    type: "JavaFX Game",
-    image: "/images/projects/catnect-four.png",
-    alt: "Catnect Four JavaFX game showing a completed game with animated cat pieces",
-    description:
-      "A cat-themed Connect Four game built with JavaFX. Players choose their cat, place animated cat tokens, and get sound effects and a winner animation when someone connects four.",
-    technologies: ["Java", "JavaFX", "Git"],
-  },
-  {
-    title: "Platformer for Andrei",
-    type: "Game Development",
-    description:
-      "A platformer game I built as an earlier programming project. It was one of the projects that pushed me to experiment with game mechanics, visual design, and building something personal instead of only completing an assignment.",
-    technologies: ["Programming", "Game Development"],
-  },
-  {
-    title: "Plant Guardian",
-    type: "Hardware + Software",
-    description:
-      "A plant-monitoring project combining programming with physical hardware. The system reads soil moisture using a capacitive sensor connected to a microcontroller, with plans to expand it into a smarter plant-care system.",
-    technologies: ["MicroPython", "ESP32", "Sensors", "IoT"],
-  },
-];
+import { projects } from "@/app/data/projects";
 
 export default function Projects() {
   const { isTouchDevice } = useExploreNextPage({
@@ -66,56 +33,95 @@ export default function Projects() {
         {/* PROJECTS */}
         <div className="mt-10 space-y-10">
           {projects.map((project) => (
-            <article
-              key={project.title}
-              className="card overflow-hidden"
+            <Link
+              key={project.slug}
+              href={`/projects/${project.slug}`}
+              className="group block"
             >
-              {project.image && (
-                <div className="relative aspect-video overflow-hidden bg-slate-800">
-                  <Image
-                    src={project.image}
-                    alt={project.alt ?? ""}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 448px"
-                    className="object-cover"
-                  />
-                </div>
-              )}
-
-              <div className="p-6">
-                <p className="text-sm font-medium text-blue-400">
-                  {project.type}
-                </p>
-
-                <h2 className="mt-2 text-2xl font-bold">
-                  {project.title}
-                </h2>
-
-                <p className="mt-4 leading-7 text-slate-300">
-                  {project.description}
-                </p>
-
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {project.technologies.map((technology) => (
-                    <span
-                      key={technology}
+              <article
+                className="
+                  card
+                  overflow-hidden
+                  transition
+                  duration-300
+                  group-hover:-translate-y-1
+                  group-hover:border-blue-400/40
+                "
+              >
+                {project.coverImage && (
+                  <div className="relative aspect-video overflow-hidden bg-slate-800">
+                    <Image
+                      src={project.coverImage}
+                      alt={`${project.title} project preview`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 448px"
                       className="
-                        rounded-full
-                        border
-                        border-[var(--border-soft)]
-                        bg-white/5
-                        px-3
-                        py-1
-                        text-sm
-                        text-slate-300
+                        object-cover
+                        transition
+                        duration-500
+                        group-hover:scale-[1.02]
                       "
-                    >
-                      {technology}
-                    </span>
-                  ))}
+                    />
+                  </div>
+                )}
+
+                <div className="p-6">
+                  {project.type && (
+                    <p className="text-sm font-medium text-blue-400">
+                      {project.type}
+                    </p>
+                  )}
+
+                  <h2 className="mt-2 text-2xl font-bold">
+                    {project.title}
+                  </h2>
+
+                  {project.subtitle && (
+                    <p className="mt-2 text-sm font-medium text-slate-400">
+                      {project.subtitle}
+                    </p>
+                  )}
+
+                  <p className="mt-4 leading-7 text-slate-300">
+                    {project.description}
+                  </p>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {project.technologies.map((technology) => (
+                      <span
+                        key={technology}
+                        className="
+                          rounded-full
+                          border
+                          border-[var(--border-soft)]
+                          bg-white/5
+                          px-3
+                          py-1
+                          text-sm
+                          text-slate-300
+                        "
+                      >
+                        {technology}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div
+                    className="
+                      mt-6
+                      text-sm
+                      font-semibold
+                      text-blue-400
+                      transition
+                      duration-300
+                      group-hover:translate-x-1
+                    "
+                  >
+                    View project →
+                  </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </Link>
           ))}
         </div>
 
