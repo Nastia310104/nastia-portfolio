@@ -59,7 +59,7 @@ export default function Contact() {
           </a>
 
           <a
-            href="https://www.linkedin.com/in/ana-00f-kotliar/"
+            href="https://www.linkedin.com/in/kotliar-dev/"
             target="_blank"
             rel="noreferrer"
             className="
@@ -86,7 +86,7 @@ export default function Contact() {
           </a>
 
           <a
-            href="https://github.com/Nastia310104"
+            href="https://github.com/kotliar-dev"
             target="_blank"
             rel="noreferrer"
             className="

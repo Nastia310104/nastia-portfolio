@@ -17,7 +17,7 @@ export default function Hero() {
     let touchStartY = 0;
     let extraScroll = 0;
 
-    const SCROLL_THRESHOLD = 300;
+    const SCROLL_THRESHOLD = 360;
     const SWIPE_THRESHOLD = 120;
 
     const atBottom = () => {
