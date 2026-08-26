@@ -1,10 +1,56 @@
 import Image from "next/image";
-import { FaEnvelope, FaGithub, FaLinkedin } from "react-icons/fa";
+
+import type { IconType } from "react-icons";
+
+import {
+  FaEnvelope,
+  FaGithub,
+  FaLinkedin
+} from "react-icons/fa";
+
+import PageSection from "@/components/PageSection";
+import { siteConfig } from "@/config/site";
+
+type ContactItem = {
+  label: string;
+  value: string;
+  href: string;
+  icon: IconType;
+  iconClass: string;
+  external?: boolean;
+};
+
+const contactItems: ContactItem[] = [
+  {
+    label: "Email Me",
+    value: siteConfig.email,
+    href: `mailto:${siteConfig.email}`,
+    icon: FaEnvelope,
+    iconClass: "text-purple-300",
+  },
+  {
+    label: "LinkedIn",
+    value: "linkedin.com/in/kotliar-dev",
+    href: siteConfig.linkedin,
+    icon: FaLinkedin,
+    iconClass: "text-blue-400",
+    external: true,
+  },
+  {
+    label: "GitHub",
+    value: "github.com/kotliar-dev",
+    href: siteConfig.github,
+    icon: FaGithub,
+    iconClass: "text-slate-200",
+    external: true,
+  },
+];
 
 export default function Contact() {
   return (
-    <section className="mx-auto flex min-h-screen w-full max-w-md flex-col px-6 py-10">
-      <div className="flex flex-1 flex-col justify-center">
+    <PageSection>
+      <div className="page-container flex min-h-[calc(100vh-8rem)] max-w-md flex-col justify-center">
+        {/* INTRO */}
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight">
             Let&apos;s Connect!
@@ -18,7 +64,7 @@ export default function Contact() {
               alt="Neon cat coding on a laptop"
               fill
               sizes="(max-width: 768px) 100vw, 384px"
-              className="relative object-contain drop-shadow-[0_0_22px_rgba(139,92,246,0.35)]"
+              className="glow relative object-contain"
               priority
             />
           </div>
@@ -32,87 +78,43 @@ export default function Contact() {
           </p>
         </div>
 
+        {/* CONTACT LINKS */}
         <div className="mt-8 space-y-3">
-          <a
-            href="mailto:kotliar.dev@gmail.com"
-            className="
-              group
-              flex items-center gap-4
-              rounded-xl
-              border border-purple-500/40
-              bg-purple-950/30
-              px-5 py-4
-              transition
-              hover:border-purple-400
-              hover:bg-purple-950/50
-              hover:shadow-[0_0_24px_rgba(139,92,246,0.14)]
-            "
-          >
-            <FaEnvelope className="text-xl text-purple-300 transition group-hover:text-purple-200" />
+          {contactItems.map((item) => {
+            const Icon = item.icon;
 
-            <div className="min-w-0 text-left">
-              <p className="font-semibold text-slate-100">Email Me</p>
-              <p className="truncate text-sm text-slate-400">
-                kotliar.dev@gmail.com
-              </p>
-            </div>
-          </a>
+            return (
+              <a
+                key={item.label}
+                href={item.href}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noreferrer" : undefined}
+                className="card group flex items-center gap-4 px-5 py-4"
+              >
+                <Icon
+                  className={`
+                    text-xl
+                    transition
+                    group-hover:text-blue-300
+                    ${item.iconClass}
+                  `}
+                />
 
-          <a
-            href="https://www.linkedin.com/in/kotliar-dev/"
-            target="_blank"
-            rel="noreferrer"
-            className="
-              group
-              flex items-center gap-4
-              rounded-xl
-              border border-slate-700
-              bg-slate-950/40
-              px-5 py-4
-              transition
-              hover:border-blue-500
-              hover:bg-slate-900
-              hover:shadow-[0_0_24px_rgba(59,130,246,0.12)]
-            "
-          >
-            <FaLinkedin className="text-xl text-blue-400 transition group-hover:text-blue-300" />
+                <div className="min-w-0 text-left">
+                  <p className="font-semibold text-slate-100">
+                    {item.label}
+                  </p>
 
-            <div className="min-w-0 text-left">
-              <p className="font-semibold text-slate-100">LinkedIn</p>
-              <p className="truncate text-sm text-slate-400">
-                linkedin.com/in/ana-00f-kotliar
-              </p>
-            </div>
-          </a>
-
-          <a
-            href="https://github.com/kotliar-dev"
-            target="_blank"
-            rel="noreferrer"
-            className="
-              group
-              flex items-center gap-4
-              rounded-xl
-              border border-slate-700
-              bg-slate-950/40
-              px-5 py-4
-              transition
-              hover:border-blue-500
-              hover:bg-slate-900
-              hover:shadow-[0_0_24px_rgba(59,130,246,0.12)]
-            "
-          >
-            <FaGithub className="text-xl text-slate-200 transition group-hover:text-blue-300" />
-
-            <div className="min-w-0 text-left">
-              <p className="font-semibold text-slate-100">GitHub</p>
-              <p className="truncate text-sm text-slate-400">
-                github.com/Nastia310104
-              </p>
-            </div>
-          </a>
+                  <p className="truncate text-sm text-slate-400">
+                    {item.value}
+                  </p>
+                </div>
+              </a>
+            );
+          })}
         </div>
 
+        {/* RESPONSE NOTE */}
         <div className="mt-9 text-center">
           <p className="text-sm text-slate-400">
             I usually reply within a day!
@@ -120,15 +122,15 @@ export default function Contact() {
 
           <div className="relative mx-auto mt-4 h-10 w-10">
             <Image
-                src="/images/paw.png"
-                alt=""
-                fill
-                sizes="40px"
-                className="object-contain drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]"
+              src="/images/paw.png"
+              alt=""
+              fill
+              sizes="40px"
+              className="glow object-contain"
             />
-            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </PageSection>
   );
 }
