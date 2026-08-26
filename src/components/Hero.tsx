@@ -151,7 +151,7 @@ export default function Hero() {
 
           <div className="mt-8 grid grid-cols-2 gap-3">
             <a
-              href="https://github.com/Nastia310104"
+              href="https://github.com/kotliar-dev"
               target="_blank"
               rel="noreferrer"
               className="
@@ -172,7 +172,7 @@ export default function Hero() {
             </a>
 
             <a
-              href="https://www.linkedin.com/in/ana-00f-kotliar/"
+              href="https://www.linkedin.com/in/kotliar-dev/"
               target="_blank"
               rel="noreferrer"
               className="
