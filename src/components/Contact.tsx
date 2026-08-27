@@ -1,135 +1,144 @@
 import Image from "next/image";
-
+import { ArrowUpRight, Send } from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import type { IconType } from "react-icons";
-
-import {
-  FaEnvelope,
-  FaGithub,
-  FaLinkedin
-} from "react-icons/fa";
 
 import PageSection from "@/components/PageSection";
 import { siteConfig } from "@/config/site";
 
-type ContactItem = {
+type SocialContact = {
   label: string;
   value: string;
   href: string;
   icon: IconType;
-  iconClass: string;
-  external?: boolean;
 };
 
-const contactItems: ContactItem[] = [
-  {
-    label: "Email Me",
-    value: siteConfig.email,
-    href: `mailto:${siteConfig.email}`,
-    icon: FaEnvelope,
-    iconClass: "text-purple-300",
-  },
+const socialContacts: SocialContact[] = [
   {
     label: "LinkedIn",
     value: "linkedin.com/in/kotliar-dev",
     href: siteConfig.linkedin,
     icon: FaLinkedin,
-    iconClass: "text-blue-400",
-    external: true,
   },
   {
     label: "GitHub",
     value: "github.com/kotliar-dev",
     href: siteConfig.github,
     icon: FaGithub,
-    iconClass: "text-slate-200",
-    external: true,
   },
 ];
 
 export default function Contact() {
   return (
-    <PageSection>
-      <div className="page-container flex min-h-[calc(100vh-8rem)] max-w-md flex-col justify-center">
-        {/* INTRO */}
-        <div className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight">
-            Let&apos;s Connect!
-          </h1>
+    <PageSection className="contact-page" labelledBy="contact-title">
+      <div className="contact-layout page-container">
+        <section className="contact-intro">
+          <div className="contact-intro-copy">
+            <p className="eyebrow">Let&apos;s connect</p>
 
-          <div className="relative mx-auto mt-7 h-52 w-full max-w-sm">
-            <div className="absolute inset-8 rounded-full bg-purple-600/20 blur-3xl" />
+            <h1 id="contact-title" className="page-title">
+              Have an idea?
+              <br />
+              <span className="accent-gradient">I&apos;m listening.</span>
+            </h1>
 
+            <p className="lead contact-lead">
+              Whether it&apos;s an opportunity, a project, a question, or just
+              a friendly hello—I&apos;d love to hear from you.
+            </p>
+          </div>
+
+          <div className="contact-art">
+            <div className="contact-art-glow" aria-hidden="true" />
             <Image
               src="/images/contact-cat.png"
               alt="Neon cat coding on a laptop"
               fill
-              sizes="(max-width: 768px) 100vw, 384px"
-              className="glow relative object-contain"
+              sizes="(max-width: 1023px) min(90vw, 34rem), 44vw"
+              className="contact-cat"
               priority
             />
           </div>
+        </section>
 
-          <p className="mx-auto mt-4 max-w-xs leading-7 text-slate-300">
-            Have a question, opportunity,
-            <br />
-            or just want to say hi?
-            <br />
-            I&apos;d love to hear from you.
-          </p>
-        </div>
+        <aside className="panel contact-panel" aria-label="Contact options">
+          <div className="contact-panel-heading">
+            <div>
+              <p className="eyebrow">Start a conversation</p>
+              <h2 className="section-title">Say hello.</h2>
+            </div>
 
-        {/* CONTACT LINKS */}
-        <div className="mt-8 space-y-3">
-          {contactItems.map((item) => {
-            const Icon = item.icon;
-
-            return (
-              <a
-                key={item.label}
-                href={item.href}
-                target={item.external ? "_blank" : undefined}
-                rel={item.external ? "noreferrer" : undefined}
-                className="card group flex items-center gap-4 px-5 py-4"
-              >
-                <Icon
-                  className={`
-                    text-xl
-                    transition
-                    group-hover:text-blue-300
-                    ${item.iconClass}
-                  `}
-                />
-
-                <div className="min-w-0 text-left">
-                  <p className="font-semibold text-slate-100">
-                    {item.label}
-                  </p>
-
-                  <p className="truncate text-sm text-slate-400">
-                    {item.value}
-                  </p>
-                </div>
-              </a>
-            );
-          })}
-        </div>
-
-        {/* RESPONSE NOTE */}
-        <div className="mt-9 text-center">
-          <p className="text-sm text-slate-400">
-            I usually reply within a day!
-          </p>
-
-          <div className="relative mx-auto mt-4 h-10 w-10">
-            <Image
-              src="/images/paw.png"
-              alt=""
-              fill
-              sizes="40px"
-              className="glow object-contain"
-            />
+            <div className="contact-paw" aria-hidden="true">
+              <Image
+                src="/images/paw.png"
+                alt=""
+                fill
+                sizes="48px"
+                className="glow"
+              />
+            </div>
           </div>
-        </div>
+
+          <a
+            href={`mailto:${siteConfig.email}`}
+            className="contact-email"
+          >
+            <span className="contact-email-icon" aria-hidden="true">
+              <Send size={20} />
+            </span>
+
+            <span className="contact-email-copy">
+              <span>Email me</span>
+              <strong>{siteConfig.email}</strong>
+            </span>
+
+            <ArrowUpRight
+              className="contact-link-arrow"
+              size={20}
+              aria-hidden="true"
+            />
+          </a>
+
+          <div className="contact-divider">
+            <span>or find me online</span>
+          </div>
+
+          <div className="contact-social-list">
+            {socialContacts.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="contact-social-link"
+                >
+                  <span className="contact-social-icon" aria-hidden="true">
+                    <Icon size={20} />
+                  </span>
+
+                  <span className="contact-social-copy">
+                    <strong>{item.label}</strong>
+                    <span>{item.value}</span>
+                  </span>
+
+                  <ArrowUpRight
+                    className="contact-link-arrow"
+                    size={19}
+                    aria-hidden="true"
+                  />
+                </a>
+              );
+            })}
+          </div>
+
+          <div className="contact-response-note">
+            <span className="contact-status-dot" aria-hidden="true" />
+            <p>I usually reply within a day.</p>
+          </div>
+        </aside>
       </div>
     </PageSection>
   );

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 type ProjectGalleryProps = {
   screenshots: string[];
@@ -14,134 +14,148 @@ export default function ProjectGallery({
   title,
 }: ProjectGalleryProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const scrollGallery = (direction: "left" | "right") => {
+  const scrollToIndex = (requestedIndex: number) => {
     const gallery = galleryRef.current;
+    const targetIndex = Math.max(
+      0,
+      Math.min(requestedIndex, screenshots.length - 1)
+    );
 
     if (!gallery) return;
 
-    const amount = gallery.clientWidth * 0.9;
+    const slides = Array.from(gallery.children) as HTMLElement[];
+    const firstSlide = slides[0];
+    const targetSlide = slides[targetIndex];
 
-    gallery.scrollBy({
-      left: direction === "left" ? -amount : amount,
+    if (!firstSlide || !targetSlide) return;
+
+    gallery.scrollTo({
+      left: targetSlide.offsetLeft - firstSlide.offsetLeft,
       behavior: "smooth",
     });
   };
 
+  const updateCurrentIndex = () => {
+    const gallery = galleryRef.current;
+
+    if (!gallery) return;
+
+    const slides = Array.from(gallery.children) as HTMLElement[];
+    const firstSlide = slides[0];
+
+    if (!firstSlide) return;
+
+    const index = slides.reduce(
+      (closestIndex, slide, slideIndex) => {
+        const currentDistance = Math.abs(
+          slide.offsetLeft - firstSlide.offsetLeft - gallery.scrollLeft
+        );
+        const closestSlide = slides[closestIndex];
+        const closestDistance = Math.abs(
+          closestSlide.offsetLeft -
+            firstSlide.offsetLeft -
+            gallery.scrollLeft
+        );
+
+        return currentDistance < closestDistance
+          ? slideIndex
+          : closestIndex;
+      },
+      0
+    );
+
+    setCurrentIndex(index);
+  };
+
   return (
-    <section style={styles.gallerySection}>
-      <div style={styles.galleryHeader}>
-        <p style={styles.swipeHint}>
-          Swipe or scroll to explore
-        </p>
+    <section
+      className="project-gallery-section"
+      aria-label={`${title} screenshots`}
+    >
+      <div className="project-gallery-header">
+        <div>
+          <p className="eyebrow">Inside the project</p>
+          <p className="project-gallery-hint">
+            Swipe, scroll, or use the buttons
+          </p>
+        </div>
 
-        <div style={styles.galleryButtons}>
-          <button
-            type="button"
-            aria-label="Previous screenshot"
-            onClick={() => scrollGallery("left")}
-            style={styles.galleryButton}
-          >
-            <ChevronLeft size={18} />
-          </button>
+        <div className="project-gallery-controls">
+          <span className="project-gallery-counter" aria-live="polite">
+            {currentIndex + 1} / {screenshots.length}
+          </span>
 
-          <button
-            type="button"
-            aria-label="Next screenshot"
-            onClick={() => scrollGallery("right")}
-            style={styles.galleryButton}
-          >
-            <ChevronRight size={18} />
-          </button>
+          {screenshots.length > 1 && (
+            <>
+              <button
+                type="button"
+                className="icon-button"
+                aria-label="Previous screenshot"
+                disabled={currentIndex === 0}
+                onClick={() => scrollToIndex(currentIndex - 1)}
+              >
+                <ChevronLeft size={18} aria-hidden="true" />
+              </button>
+
+              <button
+                type="button"
+                className="icon-button"
+                aria-label="Next screenshot"
+                disabled={currentIndex === screenshots.length - 1}
+                onClick={() => scrollToIndex(currentIndex + 1)}
+              >
+                <ChevronRight size={18} aria-hidden="true" />
+              </button>
+            </>
+          )}
         </div>
       </div>
 
       <div
         ref={galleryRef}
-        style={styles.gallery}
+        className="project-gallery"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label={`${title} image gallery`}
+        onScroll={updateCurrentIndex}
       >
         {screenshots.map((screenshot, index) => (
-          <div
+          <figure
             key={screenshot}
-            style={styles.slide}
+            className="project-gallery-slide"
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`Screenshot ${index + 1} of ${screenshots.length}`}
           >
             <Image
               src={screenshot}
               alt={`${title} screenshot ${index + 1}`}
               width={700}
               height={850}
-              style={styles.screenshot}
+              sizes="(max-width: 799px) 86vw, 700px"
+              className="project-gallery-image"
             />
-          </div>
+          </figure>
         ))}
       </div>
+
+      {screenshots.length > 1 && (
+        <div className="project-gallery-dots" aria-label="Choose screenshot">
+          {screenshots.map((screenshot, index) => (
+            <button
+              key={screenshot}
+              type="button"
+              className="project-gallery-dot"
+              data-active={currentIndex === index || undefined}
+              aria-label={`Go to screenshot ${index + 1}`}
+              aria-current={currentIndex === index ? "true" : undefined}
+              onClick={() => scrollToIndex(index)}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
-
-const styles = {
-  gallerySection: {
-    marginBottom: "56px",
-  },
-
-  galleryHeader: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: "16px",
-    marginBottom: "12px",
-  },
-
-  swipeHint: {
-    margin: 0,
-    color: "#64748b",
-    fontSize: "0.78rem",
-  },
-
-  galleryButtons: {
-    display: "flex",
-    gap: "8px",
-  },
-
-  galleryButton: {
-    width: "38px",
-    height: "38px",
-    display: "grid",
-    placeItems: "center",
-    padding: 0,
-    border: "1px solid rgba(148,163,184,.25)",
-    borderRadius: "999px",
-    background: "rgba(15,23,42,.65)",
-    color: "#e2e8f0",
-    cursor: "pointer",
-  },
-
-  gallery: {
-    display: "flex",
-    gap: "14px",
-    overflowX: "auto" as const,
-    scrollSnapType: "x mandatory" as const,
-    scrollBehavior: "smooth" as const,
-    WebkitOverflowScrolling: "touch" as const,
-    paddingBottom: "10px",
-    marginRight: "-20px",
-    paddingRight: "20px",
-    scrollbarWidth: "none" as const,
-  },
-
-  slide: {
-    flex: "0 0 88%",
-    scrollSnapAlign: "start" as const,
-  },
-
-  screenshot: {
-    display: "block",
-    width: "100%",
-    height: "auto",
-    maxHeight: "620px",
-    objectFit: "contain" as const,
-    borderRadius: "20px",
-    border: "1px solid rgba(148,163,184,.15)",
-    background: "rgba(15,23,42,.6)",
-  },
-};

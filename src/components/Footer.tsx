@@ -1,12 +1,8 @@
-import { siteConfig } from "@/config/site";
 import { Mail } from "lucide-react";
-
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import type { IconType } from "react-icons";
 
-import {
-  FaGithub,
-  FaLinkedin
-} from "react-icons/fa";
+import { siteConfig } from "@/config/site";
 
 type SocialLink = {
   label: string;
@@ -37,15 +33,20 @@ const socialLinks: SocialLink[] = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[var(--border-soft)] bg-[var(--background)] text-white">
-      <div className="page-container max-w-md py-10 text-center">
+    <footer className="site-footer">
+      <div className="site-footer-inner page-container">
+        <div>
+          <p className="site-footer-message">
+            Built with Chatster, cats, and lots of coffee.
+            <span aria-hidden="true"> ♥ 🐈 ☕</span>
+          </p>
 
-        <p className="text-sm text-slate-300">
-          Built with Chatster, cats, and lots of coffee.
-          <span className="ml-2">♥ 🐈 ☕</span>
-        </p>
+          <p className="site-footer-copyright">
+            © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+          </p>
+        </div>
 
-        <div className="mt-7 flex justify-center gap-6">
+        <div className="footer-social-links" aria-label="Social links">
           {socialLinks.map((link) => {
             const Icon = link.icon;
 
@@ -55,30 +56,14 @@ export default function Footer() {
                 href={link.href}
                 target={link.external ? "_blank" : undefined}
                 rel={link.external ? "noreferrer" : undefined}
+                className="icon-button"
                 aria-label={link.label}
-                className="
-                  text-slate-300
-                  transition
-                  hover:text-blue-400
-                  hover:drop-shadow-[0_0_8px_rgba(79,140,255,0.4)]
-                "
               >
-                <Icon size={24} />
+                <Icon size={20} aria-hidden="true" />
               </a>
             );
           })}
         </div>
-
-        <div className="mt-7 border-t border-[var(--border-soft)] pt-7 text-xs text-slate-500">
-          <p>
-            © {new Date().getFullYear()} {siteConfig.name}
-          </p>
-
-          <p className="mt-1">
-            All rights reserved.
-          </p>
-        </div>
-
       </div>
     </footer>
   );

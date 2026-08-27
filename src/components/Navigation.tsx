@@ -1,26 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
-
+import { usePathname } from "next/navigation";
+import { useEffect, useId, useRef, useState } from "react";
 import {
-  X,
-  Menu,
-  Home,
-  User,
+  Download,
   Folder,
+  Home,
   Mail,
-  Download
+  Menu,
+  User,
+  X,
 } from "lucide-react";
-
-import type { IconType } from "react-icons";
 import type { LucideIcon } from "lucide-react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import type { IconType } from "react-icons";
 
-import {
-  FaGithub,
-  FaLinkedin
-} from "react-icons/fa";
 import { siteConfig } from "@/config/site";
 
 type NavigationItem = {
@@ -36,64 +31,42 @@ type SocialLink = {
 };
 
 const navigationItems: NavigationItem[] = [
-  {
-    label: "Home",
-    href: "/",
-    icon: Home,
-  },
-  {
-    label: "About",
-    href: "/about",
-    icon: User,
-  },
-  {
-    label: "Projects",
-    href: "/projects",
-    icon: Folder,
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-    icon: Mail,
-  },
+  { label: "Home", href: "/", icon: Home },
+  { label: "About", href: "/about", icon: User },
+  { label: "Projects", href: "/projects", icon: Folder },
+  { label: "Contact", href: "/contact", icon: Mail },
 ];
 
 const socialLinks: SocialLink[] = [
-  {
-    label: "GitHub",
-    href: siteConfig.github,
-    icon: FaGithub,
-  },
-  {
-    label: "LinkedIn",
-    href: siteConfig.linkedin,
-    icon: FaLinkedin,
-  },
+  { label: "GitHub", href: siteConfig.github, icon: FaGithub },
+  { label: "LinkedIn", href: siteConfig.linkedin, icon: FaLinkedin },
 ];
+
+function isActiveRoute(pathname: string, href: string) {
+  return href === "/"
+    ? pathname === "/"
+    : pathname.startsWith(href);
+}
 
 export default function Navigation() {
   const pathname = usePathname();
-
+  const menuId = useId();
+  const openButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+  const closeMenu = () => setMenuOpen(false);
 
   useEffect(() => {
-    if (!menuOpen) {
-      return;
-    }
+    if (!menuOpen) return;
 
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeMenu();
-      }
+      if (event.key === "Escape") setMenuOpen(false);
     };
 
     document.body.style.overflow = "hidden";
-
     window.addEventListener("keydown", handleEscape);
+    closeButtonRef.current?.focus();
 
     return () => {
       document.body.style.overflow = "";
@@ -102,177 +75,142 @@ export default function Navigation() {
   }, [menuOpen]);
 
   return (
-    <>
-      {/* TOP NAVIGATION */}
-      <nav className="w-full border-b border-[var(--border-soft)] bg-[var(--background)] text-white">
-        <div className="page-container flex max-w-md items-center justify-between py-5">
-          <Link
-            href="/"
-            className="
-              text-sm
-              font-bold
-              tracking-wide
-              transition
-              hover:text-blue-400
-            "
-          >
-            {siteConfig.name.toUpperCase()}
+    <header className="site-header">
+      <nav className="site-nav" aria-label="Primary navigation">
+        <div className="site-nav-inner page-container">
+          <Link href="/" className="site-brand">
+            <span className="site-brand-mark" aria-hidden="true">
+              N
+            </span>
+            <span>{siteConfig.name}</span>
           </Link>
 
-          <button
-            type="button"
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open navigation menu"
-            aria-expanded={menuOpen}
-            className="
-              text-slate-300
-              transition
-              hover:text-blue-400
-            "
-          >
-            <Menu size={24} />
-          </button>
-        </div>
-      </nav>
-
-      {/* MENU OVERLAY */}
-      {menuOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
-          onClick={closeMenu}
-        >
-          <aside
-            aria-label="Main navigation"
-            className="
-              ml-auto
-              flex
-              min-h-screen
-              w-72
-              flex-col
-              border-l
-              border-[var(--border-soft)]
-              bg-[var(--background)]
-              px-6
-              py-6
-              text-white
-              shadow-2xl
-            "
-            onClick={(event) => event.stopPropagation()}
-          >
-            {/* CLOSE */}
-            <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={closeMenu}
-                aria-label="Close navigation menu"
-                className="
-                  text-slate-300
-                  transition
-                  hover:text-blue-400
-                "
-              >
-                <X size={24} />
-              </button>
-            </div>
-
-            {/* PAGE LINKS */}
-            <div className="mt-12 flex flex-col gap-2">
+          <div className="desktop-navigation">
+            <div className="desktop-nav-links">
               {navigationItems.map((item) => {
-                const Icon = item.icon;
-
-                const isActive =
-                  item.href === "/"
-                    ? pathname === "/"
-                    : pathname.startsWith(item.href);
+                const active = isActiveRoute(pathname, item.href);
 
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={closeMenu}
-                    aria-current={isActive ? "page" : undefined}
-                    className={`
-                      flex
-                      items-center
-                      gap-4
-                      rounded-xl
-                      px-3
-                      py-3
-                      transition
-                      ${
-                        isActive
-                          ? "bg-blue-500/10 text-blue-400"
-                          : "text-slate-200 hover:bg-white/5 hover:text-blue-300"
-                      }
-                    `}
+                    className="nav-link"
+                    data-active={active || undefined}
+                    aria-current={active ? "page" : undefined}
                   >
-                    <Icon size={22} />
-
-                    <span>
-                      {item.label}
-                    </span>
+                    {item.label}
                   </Link>
                 );
               })}
             </div>
 
-            <div className="my-7 border-t border-[var(--border-soft)]" />
-
-            {/* RESUME */}
             <a
               href={siteConfig.resume}
               download
-              className="button button-primary gap-2 rounded-xl"
+              className="button button-secondary nav-resume"
             >
-              <Download size={20} />
+              <Download size={17} aria-hidden="true" />
               Resume
             </a>
+          </div>
 
-            <div className="my-7 border-t border-[var(--border-soft)]" />
+          <button
+            ref={openButtonRef}
+            type="button"
+            className="icon-button mobile-menu-button"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open navigation menu"
+            aria-expanded={menuOpen}
+            aria-controls={menuId}
+          >
+            <Menu size={22} aria-hidden="true" />
+          </button>
+        </div>
+      </nav>
 
-            {/* SOCIAL LINKS */}
-            <div className="flex flex-col gap-2">
-              {socialLinks.map((link) => {
-                const Icon = link.icon;
+      {menuOpen && (
+        <div className="nav-overlay" onMouseDown={closeMenu}>
+          <aside
+            id={menuId}
+            className="nav-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <div className="nav-drawer-header">
+              <span className="eyebrow">Navigate</span>
+              <button
+                ref={closeButtonRef}
+                type="button"
+                className="icon-button"
+                onClick={() => {
+                  closeMenu();
+                  openButtonRef.current?.focus();
+                }}
+                aria-label="Close navigation menu"
+              >
+                <X size={22} aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="mobile-nav-links">
+              {navigationItems.map((item) => {
+                const Icon = item.icon;
+                const active = isActiveRoute(pathname, item.href);
 
                 return (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="
-                      flex
-                      items-center
-                      gap-4
-                      rounded-xl
-                      px-3
-                      py-3
-                      text-slate-200
-                      transition
-                      hover:bg-white/5
-                      hover:text-blue-300
-                    "
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="mobile-nav-link"
+                    data-active={active || undefined}
+                    aria-current={active ? "page" : undefined}
+                    onClick={closeMenu}
                   >
-                    <Icon size={22} />
-
-                    <span>
-                      {link.label}
-                    </span>
-                  </a>
+                    <Icon size={21} aria-hidden="true" />
+                    <span>{item.label}</span>
+                  </Link>
                 );
               })}
             </div>
 
-            {/* BRAND MARK */}
-            <div className="mt-auto border-t border-[var(--border-soft)] pt-6 text-center">
-              <p className="text-xs text-slate-500">
-                {siteConfig.domain}
-              </p>
+            <div className="nav-drawer-divider" />
+
+            <a
+              href={siteConfig.resume}
+              download
+              className="button button-primary"
+            >
+              <Download size={19} aria-hidden="true" />
+              Download Resume
+            </a>
+
+            <div className="nav-drawer-footer">
+              <div className="nav-social-links">
+                {socialLinks.map((link) => {
+                  const Icon = link.icon;
+
+                  return (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="icon-button"
+                      aria-label={link.label}
+                    >
+                      <Icon size={20} aria-hidden="true" />
+                    </a>
+                  );
+                })}
+              </div>
+
+              <p>{siteConfig.domain}</p>
             </div>
           </aside>
         </div>
       )}
-    </>
+    </header>
   );
 }

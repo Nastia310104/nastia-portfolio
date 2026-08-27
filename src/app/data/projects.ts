@@ -57,5 +57,8 @@ export const projects: Project[] = [
                 The code itself was written almost entirely by ChatGPT.
 
                 I include the project here deliberately rather than presenting it as code I wrote line-by-line. For me, the project represents another useful development skill: directing AI effectively, evaluating generated code, debugging problems, refining architecture, and turning an idea into a finished, polished application.`,
-    }
+    },
+    // {
+
+    // },
 ];

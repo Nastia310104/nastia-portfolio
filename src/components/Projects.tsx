@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowUpRight, Code2 } from "lucide-react";
 
+import { projects } from "@/app/data/projects";
 import PageSection from "@/components/PageSection";
 import { useExploreNextPage } from "@/hooks/useExploreNextPage";
-import { projects } from "@/app/data/projects";
 
 export default function Projects() {
   const { isTouchDevice } = useExploreNextPage({
@@ -13,130 +14,125 @@ export default function Projects() {
   });
 
   return (
-    <PageSection>
-      <div className="page-container max-w-md">
-        {/* INTRO */}
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-400">
-          Projects
-        </p>
+    <PageSection className="projects-page" labelledBy="projects-title">
+      <div className="page-container">
+        <header className="projects-intro">
+          <div className="projects-intro-copy">
+            <p className="eyebrow">Selected work</p>
 
-        <h1 className="mt-2 text-4xl font-bold tracking-tight">
-          Things I&apos;ve built.
-        </h1>
+            <h1 id="projects-title" className="page-title">
+              Things I&apos;ve
+              <br />
+              <span className="accent-gradient">brought to life.</span>
+            </h1>
 
-        <p className="mt-6 leading-7 text-slate-400">
-          A collection of software, games, and experimental projects I&apos;ve
-          built while learning, solving problems, and occasionally involving
-          far too many cats.
-        </p>
+            <p className="lead projects-lead">
+              Software, games, and experiments built while learning, solving
+              real problems, and occasionally involving far too many cats.
+            </p>
+          </div>
 
-        {/* PROJECTS */}
-        <div className="mt-10 space-y-10">
-          {projects.map((project) => (
+          <div className="projects-count" aria-label={`${projects.length} projects`}>
+            <Code2 aria-hidden="true" />
+            <strong>{projects.length}</strong>
+            <span>Projects</span>
+          </div>
+        </header>
+
+        <div className="projects-grid">
+          {projects.map((project, index) => (
             <Link
               key={project.slug}
               href={`/projects/${project.slug}`}
-              className="group block"
+              className="project-card-link"
+              data-featured={index === 0 || undefined}
+              aria-label={`View ${project.title} project`}
             >
-              <article
-                className="
-                  card
-                  overflow-hidden
-                  transition
-                  duration-300
-                  group-hover:-translate-y-1
-                  group-hover:border-blue-400/40
-                "
-              >
-                {project.coverImage && (
-                  <div className="relative aspect-video overflow-hidden bg-slate-800">
+              <article className="project-card">
+                <div className="project-card-media">
+                  {project.coverImage ? (
                     <Image
                       src={project.coverImage}
-                      alt={`${project.title} project preview`}
+                      alt=""
                       fill
-                      sizes="(max-width: 768px) 100vw, 448px"
-                      className="
-                        object-cover
-                        transition
-                        duration-500
-                        group-hover:scale-[1.02]
-                      "
+                      sizes={
+                        index === 0
+                          ? "(max-width: 1023px) calc(100vw - 2rem), 52vw"
+                          : "(max-width: 767px) calc(100vw - 2rem), 40vw"
+                      }
+                      className="project-card-image"
                     />
-                  </div>
-                )}
-
-                <div className="p-6">
-                  {project.type && (
-                    <p className="text-sm font-medium text-blue-400">
-                      {project.type}
-                    </p>
+                  ) : (
+                    <div className="project-card-placeholder" aria-hidden="true">
+                      <Code2 />
+                    </div>
                   )}
 
-                  <h2 className="mt-2 text-2xl font-bold">
-                    {project.title}
-                  </h2>
+                  <div className="project-card-number" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                </div>
+
+                <div className="project-card-content">
+                  <div className="project-card-heading">
+                    <div>
+                      {project.type && (
+                        <p className="eyebrow project-card-type">
+                          {project.type}
+                        </p>
+                      )}
+
+                      <h2 className="project-card-title">
+                        {project.title}
+                      </h2>
+                    </div>
+
+                    <span className="project-card-arrow" aria-hidden="true">
+                      <ArrowUpRight />
+                    </span>
+                  </div>
 
                   {project.subtitle && (
-                    <p className="mt-2 text-sm font-medium text-slate-400">
+                    <p className="project-card-subtitle">
                       {project.subtitle}
                     </p>
                   )}
 
-                  <p className="mt-4 leading-7 text-slate-300">
+                  <p className="project-card-description">
                     {project.description}
                   </p>
 
-                  <div className="mt-5 flex flex-wrap gap-2">
+                  <div className="tag-list project-card-tags">
                     {project.technologies.map((technology) => (
-                      <span
-                        key={technology}
-                        className="
-                          rounded-full
-                          border
-                          border-[var(--border-soft)]
-                          bg-white/5
-                          px-3
-                          py-1
-                          text-sm
-                          text-slate-300
-                        "
-                      >
+                      <span key={technology} className="tag tag-muted">
                         {technology}
                       </span>
                     ))}
                   </div>
 
-                  <div
-                    className="
-                      mt-6
-                      text-sm
-                      font-semibold
-                      text-blue-400
-                      transition
-                      duration-300
-                      group-hover:translate-x-1
-                    "
-                  >
-                    View project →
-                  </div>
+                  <span className="project-card-cta">
+                    Explore project
+                    <ArrowUpRight size={16} aria-hidden="true" />
+                  </span>
                 </div>
               </article>
             </Link>
           ))}
         </div>
 
-        {/* EXPLORE */}
-        <div className="mt-14 text-center">
-          <div className="flex flex-col items-center gap-2 text-slate-400">
-            <p className="text-base font-medium uppercase tracking-[0.22em]">
-              {isTouchDevice
-                ? "Swipe to connect"
-                : "Scroll to connect"}
-            </p>
+        <div className="projects-page-end">
+          <p>
+            More experiments are always brewing.
+            <span aria-hidden="true"> ☕</span>
+          </p>
 
+          <div className="explore-prompt">
+            <p className="explore-prompt-label">
+              {isTouchDevice ? "Swipe to connect" : "Scroll to connect"}
+            </p>
             <span
+              className="explore-prompt-arrow projects-explore-arrow"
               aria-hidden="true"
-              className="animate-bounce text-2xl text-blue-400"
             >
               ↓
             </span>

@@ -1,288 +1,254 @@
 "use client";
 
 import Image from "next/image";
-
 import type { IconType } from "react-icons";
-
 import {
-  FaBriefcase,
-  FaGraduationCap,
-  FaSeedling,
   FaBrain,
-  FaRocket,
+  FaBriefcase,
   FaBullseye,
+  FaGraduationCap,
+  FaLightbulb,
   FaPuzzlePiece,
-  FaLightbulb
+  FaRocket,
+  FaSeedling,
 } from "react-icons/fa";
 
 import PageSection from "@/components/PageSection";
 import ScrollButton from "@/components/ScrollButton";
-
 import { useExploreNextPage } from "@/hooks/useExploreNextPage";
-
 
 type MindsetItem = {
   title: string;
   description: string;
   icon: IconType;
-  iconClass: string;
+  tone: "purple" | "blue" | "rose" | "cyan";
+};
+
+type ExperienceItem = {
+  role: string;
+  organization: string;
+  dates: string;
+  description: string;
 };
 
 const mindsetItems: MindsetItem[] = [
   {
     title: "Curious by nature",
     description:
-      "I love diving deep, asking questions, and understanding how things really work.",
+      "I ask questions, follow interesting threads, and want to understand how things actually work.",
     icon: FaBrain,
-    iconClass: "text-pink-400",
+    tone: "purple",
   },
   {
     title: "Always learning",
     description:
-      "New tech, new concepts, new challenges - I get excited about them all.",
+      "New technology, unfamiliar concepts, and ambitious projects genuinely excite me.",
     icon: FaRocket,
-    iconClass: "text-blue-400",
+    tone: "blue",
   },
   {
     title: "Goal-oriented",
     description:
-      "I set high standards for myself and enjoy turning big goals into small daily wins.",
+      "I set high standards and turn large goals into small, consistent wins.",
     icon: FaBullseye,
-    iconClass: "text-red-400",
+    tone: "rose",
   },
   {
     title: "Problem solver",
     description:
-      "I see problems as puzzles. The fun is finding the right approach and making it work.",
+      "I see problems as puzzles: understand the pieces, test an approach, and make it work.",
     icon: FaPuzzlePiece,
-    iconClass: "text-cyan-400",
+    tone: "cyan",
+  },
+];
+
+const experienceItems: ExperienceItem[] = [
+  {
+    role: "Administrative Assistant",
+    organization: "SUNY Oswego",
+    dates: "2023 - Present",
+    description:
+      "Coordinate events, communication, administrative systems, and cross-team operations with care and attention to detail.",
+  },
+  {
+    role: "Backend Developer",
+    organization: "Taptima",
+    dates: "2021 - 2022",
+    description:
+      "Developed and maintained web applications using PHP, Symfony, MySQL, Docker, Git, and JavaScript.",
   },
 ];
 
 export default function About() {
-
   const { isTouchDevice } = useExploreNextPage({
     nextPage: "/projects",
   });
-  
+
   return (
-    <PageSection id="top">
-      <div className="page-container max-w-md">
-        {/* INTRO */}
-        <div className="mb-14">
-          <h1 className="text-4xl font-bold tracking-tight">
-            About Me
-          </h1>
+    <PageSection id="top" className="about-page" labelledBy="about-title">
+      <div className="page-container">
+        <header className="about-intro">
+          <div className="about-intro-copy">
+            <p className="eyebrow">More than code</p>
 
-          <div className="relative mx-auto mt-6 h-56 w-full max-w-xs">
-            <div className="absolute inset-8 rounded-full bg-purple-600/20 blur-3xl" />
+            <h1 id="about-title" className="page-title">
+              Curious mind.
+              <br />
+              <span className="accent-gradient">Practical builder.</span>
+            </h1>
 
+            <p className="lead about-lead">
+              I&apos;m a Computer Science student who loves turning ideas into
+              real things—clean, useful, and occasionally playful software that
+              solves problems people actually have.
+            </p>
+
+            <p className="body-copy about-intro-body">
+              Outside of code, I&apos;m probably in my garden, organizing a
+              community project, or learning something new that I definitely
+              don&apos;t need... yet. 🌱
+            </p>
+
+            <dl className="about-highlights">
+              <div>
+                <dt>4.0</dt>
+                <dd>GPA</dd>
+              </div>
+              <div>
+                <dt>Backend</dt>
+                <dd>Experience</dd>
+              </div>
+              <div>
+                <dt>Always</dt>
+                <dd>Learning</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="about-art" aria-label="A little cat encouragement">
+            <div className="about-art-glow" aria-hidden="true" />
             <Image
               src="/images/about-cat.png"
               alt="Neon cat waving with a heart speech bubble"
               fill
-              sizes="(max-width: 768px) 100vw, 320px"
-              className="glow object-contain"
+              sizes="(max-width: 1023px) min(80vw, 28rem), 34vw"
+              className="about-cat"
               priority
             />
           </div>
+        </header>
 
-          <p className="mt-6 leading-7 text-slate-300">
-            I&apos;m a Computer Science student who loves turning ideas into
-            real things. I enjoy building clean, useful, and sometimes playful
-            software that solves problems people actually have.
-          </p>
+        <section className="about-section" aria-labelledby="mindset-title">
+          <div className="about-section-heading">
+            <div>
+              <p className="eyebrow">How I work</p>
+              <h2 id="mindset-title" className="section-title">
+                Learning mindset
+              </h2>
+            </div>
+            <FaLightbulb className="about-heading-icon" aria-hidden="true" />
+          </div>
 
-          <p className="mt-5 leading-7 text-slate-400">
-            Outside of code, I&apos;m probably in my garden, planning my next
-            project, or learning something new that I definitely don&apos;t
-            need... yet. 🌱
-          </p>
-        </div>
-
-        {/* MINDSET */}
-        <div className="mb-16">
-          <SectionHeading
-            icon={FaLightbulb}
-            title="Learning Mindset"
-          />
-
-          <div className="mt-7 space-y-3">
+          <div className="mindset-grid">
             {mindsetItems.map((item) => {
               const Icon = item.icon;
 
               return (
-                <div
+                <article
                   key={item.title}
-                  className="card flex gap-4 p-5"
+                  className="card mindset-card"
+                  data-tone={item.tone}
                 >
-                  <Icon
-                    className={`mt-1 shrink-0 text-2xl ${item.iconClass}`}
-                  />
+                  <div className="mindset-icon">
+                    <Icon aria-hidden="true" />
+                  </div>
 
                   <div>
-                    <h3 className="font-semibold text-slate-100">
-                      {item.title}
-                    </h3>
-
-                    <p className="mt-1 text-sm leading-6 text-slate-400">
-                      {item.description}
-                    </p>
+                    <h3 className="card-title">{item.title}</h3>
+                    <p>{item.description}</p>
                   </div>
-                </div>
+                </article>
               );
             })}
           </div>
-        </div>
+        </section>
 
-        {/* EXPERIENCE */}
-        <div className="mb-14">
-          <SectionHeading
-            icon={FaBriefcase}
-            title="Experience"
-          />
-
-          <div className="mt-6 space-y-4">
-            <div className="card p-5">
-              <h3 className="font-semibold text-slate-100">
-                Administrative Assistant
-              </h3>
-
-              <p className="mt-1 text-sm text-blue-400">
-                SUNY Oswego
-              </p>
-
-              <p className="mt-1 text-sm text-slate-500">
-                2023 - Present
-              </p>
-
-              <p className="mt-4 leading-7 text-slate-300">
-                Event coordination, communication, administrative systems, and
-                supporting cross-team operations.
-              </p>
+        <div className="about-columns">
+          <section className="about-section" aria-labelledby="experience-title">
+            <div className="about-section-heading">
+              <div>
+                <p className="eyebrow">Where I&apos;ve contributed</p>
+                <h2 id="experience-title" className="section-title">
+                  Experience
+                </h2>
+              </div>
+              <FaBriefcase className="about-heading-icon" aria-hidden="true" />
             </div>
 
-            <div className="card p-5">
-              <h3 className="font-semibold text-slate-100">
-                Backend Developer
-              </h3>
-
-              <p className="mt-1 text-sm text-blue-400">
-                Taptima
-              </p>
-
-              <p className="mt-1 text-sm text-slate-500">
-                2021 - 2022
-              </p>
-
-              <p className="mt-4 leading-7 text-slate-300">
-                Developed and maintained web applications using PHP (Symfony),
-                MySQL, Docker, Git, and JavaScript.
-              </p>
+            <div className="experience-timeline">
+              {experienceItems.map((item) => (
+                <article key={item.role} className="experience-item">
+                  <div className="experience-marker" aria-hidden="true" />
+                  <p className="experience-dates">{item.dates}</p>
+                  <h3 className="card-title">{item.role}</h3>
+                  <p className="experience-organization">{item.organization}</p>
+                  <p className="body-copy">{item.description}</p>
+                </article>
+              ))}
             </div>
+          </section>
+
+          <div className="about-side-column">
+            <section className="panel education-panel" aria-labelledby="education-title">
+              <FaGraduationCap className="about-panel-icon" aria-hidden="true" />
+              <p className="eyebrow">Education</p>
+              <h2 id="education-title" className="section-title">
+                Finger Lakes Community College
+              </h2>
+              <p className="education-degree">A.S. in Computer Science</p>
+              <p className="education-date">Expected 2027</p>
+              <ul className="education-list">
+                <li>4.0 GPA</li>
+                <li>Software development coursework</li>
+                <li>Honors student</li>
+              </ul>
+            </section>
+
+            <section className="callout community-panel" aria-labelledby="community-title">
+              <FaSeedling className="about-panel-icon" aria-hidden="true" />
+              <p className="eyebrow">Beyond the screen</p>
+              <h2 id="community-title" className="section-title">
+                Community involvement
+              </h2>
+              <p className="body-copy">
+                I enjoy bringing people together and contributing to projects
+                that make everyday life a little better.
+              </p>
+              <div className="tag-list">
+                <span className="tag">Gardening Club Organizer</span>
+                <span className="tag">Master Gardener Volunteer</span>
+              </div>
+            </section>
           </div>
         </div>
 
-        {/* EDUCATION */}
-        <div className="mb-14">
-          <SectionHeading
-            icon={FaGraduationCap}
-            title="Education"
-          />
-
-          <div className="card mt-6 p-5">
-            <h3 className="font-semibold text-slate-100">
-              Finger Lakes Community College
-            </h3>
-
-            <p className="mt-2 text-blue-400">
-              A.S. in Computer Science
-            </p>
-
-            <p className="mt-1 text-sm text-slate-500">
-              Expected 2027
-            </p>
-
-            <ul className="mt-4 space-y-2 text-sm leading-6 text-slate-300">
-              <li>• Relevant coursework in software development</li>
-              <li>• Honors student</li>
-              <li>• Phi Theta Kappa</li>
-            </ul>
-          </div>
-        </div>
-
-        {/* VOLUNTEERING */}
-        <div className="mb-12">
-          <SectionHeading
-            icon={FaSeedling}
-            title="Volunteering"
-            iconClass="text-purple-300"
-          />
-
-          <div className="card mt-6 p-5">
-            <h3 className="font-semibold text-slate-100">
-              Community Involvement
-            </h3>
-
-            <p className="mt-4 leading-7 text-slate-300">
-              I enjoy giving back, helping with events, and being part of
-              initiatives that make a positive impact.
-            </p>
-
-            <p className="mt-4 text-sm leading-6 text-slate-400">
-              Gardening Club Organizer · Master Gardener Volunteer
-            </p>
-          </div>
-        </div>
-
-        {/* BACK TO TOP */}
-        <div className="text-center">
-          <ScrollButton targetId="top">
-            Back to Top ↑
+        <div className="about-page-end">
+          <ScrollButton targetId="top" variant="ghost">
+            Back to top ↑
           </ScrollButton>
-        </div>
 
-                {/* EXPLORE */}
-        <div className="mt-14 text-center">
-          <div className="flex flex-col items-center gap-2 text-slate-400">
-            <p className="text-base font-medium uppercase tracking-[0.22em]">
+          <div className="explore-prompt">
+            <p className="explore-prompt-label">
               {isTouchDevice
                 ? "Swipe to see my projects"
                 : "Scroll to see my projects"}
             </p>
-
-            <span
-              aria-hidden="true"
-              className="animate-bounce text-2xl text-blue-400"
-            >
+            <span className="explore-prompt-arrow about-explore-arrow" aria-hidden="true">
               ↓
             </span>
           </div>
         </div>
-
-
       </div>
     </PageSection>
-  );
-}
-
-type SectionHeadingProps = {
-  icon: IconType;
-  title: string;
-  iconClass?: string;
-};
-
-function SectionHeading({
-  icon: Icon,
-  title,
-  iconClass = "text-slate-300",
-}: SectionHeadingProps) {
-  return (
-    <div className="flex items-center gap-3">
-      <Icon className={`text-xl ${iconClass}`} />
-      <h2 className="text-2xl font-bold">
-        {title}
-      </h2>
-    </div>
   );
 }
