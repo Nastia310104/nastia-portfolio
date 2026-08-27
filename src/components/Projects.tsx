@@ -12,6 +12,8 @@ export default function Projects() {
   const { isTouchDevice } = useExploreNextPage({
     nextPage: "/contact",
   });
+  const projectLabel =
+    projects.length === 1 ? "Project" : "Projects";
 
   return (
     <PageSection className="projects-page" labelledBy="projects-title">
@@ -32,10 +34,13 @@ export default function Projects() {
             </p>
           </div>
 
-          <div className="projects-count" aria-label={`${projects.length} projects`}>
+          <div
+            className="projects-count"
+            aria-label={`${projects.length} ${projectLabel.toLowerCase()}`}
+          >
             <Code2 aria-hidden="true" />
             <strong>{projects.length}</strong>
-            <span>Projects</span>
+            <span>{projectLabel}</span>
           </div>
         </header>
 

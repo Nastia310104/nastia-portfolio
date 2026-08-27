@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 
 type UseExploreNextPageOptions = {
@@ -9,6 +9,30 @@ type UseExploreNextPageOptions = {
   swipeThreshold?: number;
 };
 
+const touchPointerQuery = "(any-pointer: coarse)";
+
+const subscribeToTouchCapability = (
+  onStoreChange: () => void
+) => {
+  const mediaQuery = window.matchMedia(touchPointerQuery);
+
+  mediaQuery.addEventListener("change", onStoreChange);
+
+  return () => {
+    mediaQuery.removeEventListener(
+      "change",
+      onStoreChange
+    );
+  };
+};
+
+const getTouchCapability = () =>
+  "ontouchstart" in window ||
+  navigator.maxTouchPoints > 0 ||
+  window.matchMedia(touchPointerQuery).matches;
+
+const getServerTouchCapability = () => false;
+
 export function useExploreNextPage({
   nextPage,
   scrollThreshold = 360,
@@ -16,7 +40,11 @@ export function useExploreNextPage({
 }: UseExploreNextPageOptions) {
   const router = useRouter();
 
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const isTouchDevice = useSyncExternalStore(
+    subscribeToTouchCapability,
+    getTouchCapability,
+    getServerTouchCapability
+  );
 
   useEffect(() => {
     let touchStartY = 0;
@@ -28,21 +56,14 @@ export function useExploreNextPage({
       document.documentElement.scrollHeight - 2;
 
     const goToNextPage = () => {
-      if (navigating) {
-        return;
-      }
+      if (navigating) return;
 
       navigating = true;
       router.push(nextPage);
     };
 
     const handleWheel = (event: WheelEvent) => {
-      if (!atBottom()) {
-        extraScroll = 0;
-        return;
-      }
-
-      if (event.deltaY <= 0) {
+      if (!atBottom() || event.deltaY <= 0) {
         extraScroll = 0;
         return;
       }
@@ -55,7 +76,6 @@ export function useExploreNextPage({
     };
 
     const handleTouchStart = (event: TouchEvent) => {
-      setIsTouchDevice(true);
       touchStartY = event.touches[0].clientY;
     };
 
@@ -68,29 +88,26 @@ export function useExploreNextPage({
       }
     };
 
-    if (
-      "ontouchstart" in window ||
-      navigator.maxTouchPoints > 0
-    ) {
-      setIsTouchDevice(true);
-    }
-
     window.addEventListener("wheel", handleWheel, {
       passive: true,
     });
-
     window.addEventListener("touchstart", handleTouchStart, {
       passive: true,
     });
-
     window.addEventListener("touchend", handleTouchEnd, {
       passive: true,
     });
 
     return () => {
       window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchend", handleTouchEnd);
+      window.removeEventListener(
+        "touchstart",
+        handleTouchStart
+      );
+      window.removeEventListener(
+        "touchend",
+        handleTouchEnd
+      );
     };
   }, [
     nextPage,
